@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fao.fenix</groupId>
-	<artifactId>faostat-browse-dbms</artifactId>
+	<artifactId>mongodb-handler</artifactId>
 	<version>4.1.3-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>FAOSTAT Browse DBMS</name>
-	<description>REST services for FAOSTAT Browse module</description>
+	<name>Library</name>
+	<description>REST services for Library module</description>
 	<build>
 		<plugins>
 			<plugin>
