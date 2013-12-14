@@ -39,9 +39,9 @@ import java.util.List;
 @Path("/library")
 public class SQLRESTService {
 	
-	@POST
+	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/post/books")
+	@Path("/put/books")
 	public Response postView(
             @FormParam("username") String username,
             @FormParam("password") String password,
@@ -61,7 +61,7 @@ public class SQLRESTService {
 			ResponseBuilder builder = Response.ok(out);
 			builder.header("Access-Control-Allow-Origin", "*");
 			builder.header("Access-Control-Max-Age", "3600");
-			builder.header("Access-Control-Allow-Methods", "POST");
+			builder.header("Access-Control-Allow-Methods", "PUT");
 			builder.header("Access-Control-Allow-Headers", "X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin");
 			return builder.build();
 		} catch (Exception e) {

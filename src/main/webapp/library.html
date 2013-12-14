@@ -121,9 +121,9 @@
         data.collection = collection;
         data.json = json;
 
-        var url = 'rest/library/post/books';
+        var url = 'rest/library/put/books';
         $.ajax({
-            type : 'POST',
+            type : 'PUT',
             url : url,
             data : data,
             success : function(response) {
