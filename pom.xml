@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fao.fenix</groupId>
 	<artifactId>mongodb-handler</artifactId>
-	<version>4.1.3-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Library</name>
 	<description>REST services for Library module</description>
