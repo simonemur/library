@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Add book</title>
+    <script type='text/javascript' src='http://fenixapps.fao.org/repository/js/jquery/1.8.1/jquery.min.js'></script>
+    <script type='text/javascript' src='js/json2.js'></script>
+    <script type='text/javascript' src='js/minify.json.js'></script>
+    <style type="text/css">
+        .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+        .CodeMirror-activeline-background {background: #e8f2ff !important;}
+    </style>
+    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'>
+</head>
+
+<body>
+
+<div class="container">
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 style="color:#428BCA">Insert a book</h3>
+        </div>
+    </div>
+    <div style='height: 15px; clear:both;'></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">Title</span>
+                <input id="title" type="text" class="form-control" placeholder="Insert the title">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">Author</span>
+                <input id="author" type="text" class="form-control" placeholder="Insert the author">
+            </div>
+        </div>
+    </div>
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="input-group">
+                <span class="input-group-addon">Abstract</span>
+                <input id="abstract" type="text" class="form-control" placeholder="Insert the abstract">
+            </div>
+        </div>
+    </div>
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-addon">ISBN</span>
+                <input id="isbn" type="text" class="form-control" placeholder="Insert the isbn">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon">Date</span>
+                <input id="date_publishing" type="text" class="form-control" placeholder="Insert the date of publishing">
+            </div>
+
+        </div>
+    </div>
+    <div style="height: 15px;"></div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group input-group-sm">
+                <button id="addbook" type="button" class="btn btn-default">Add book</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
+
+<script>
+    $( "#addbook" ).click(function() {
+        var title = $('#title').val();
+        var author = $('#author').val();
+        var isbn = $('#isbn').val();
+        var abstract = $('#abstract').val();
+        var date_publishing = $('#date_publishing').val();
+
+        var json = {
+            "title" : title,
+            "author" : author,
+            "isbn" : isbn,
+            "abstract" : abstract,
+            "date_publishing" : date_publishing
+        }
+
+        saveJSON(JSON.stringify(json));
+    });
+
+    function cleanIDS(json) {
+        $('#title').val('');
+        var title = $('#title').val('');
+        var author = $('#author').val('');
+        var isbn = $('#isbn').val('');
+        var abstract = $('#abstract').val('');
+        var date_publishing = $('#date_publishing').val('');
+    }
+
+    function saveJSON(json) {
+        var useCompression = Boolean($('#checkbox').is(':checked'));
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var schema  = 'library';
+        var collection  = 'books';
+
+        var data = {};
+        data.username = username;
+        data.password = password;
+        data.schema = schema;
+        data.collection = collection;
+        data.json = json;
+
+        var url = 'rest/library/post/books';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            success : function(response) {
+                alert('book added to the library');
+
+            },
+            error : function(err, b, c) {
+                console.log(err.status + ", " + b + ", " + c);
+            }
+        });
+    }
+
+    cleanIDS();
+
+</script>

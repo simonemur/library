@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Seach a book</title>
+    <script type='text/javascript' src='http://fenixapps.fao.org/repository/js/jquery/1.8.1/jquery.min.js'></script>
+    <script type='text/javascript' src='js/json2.js'></script>
+    <script type='text/javascript' src='js/minify.json.js'></script>
+    <style type="text/css">
+        .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+        .CodeMirror-activeline-background {background: #e8f2ff !important;}
+    </style>
+    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'>
+</head>
+
+<body>
+
+<div class="container">
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 style="color:#428BCA">Search a book</h3>
+        </div>
+    </div>
+    <div style='height: 15px; clear:both;'></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-addon">Search</span>
+                <input id="text" type="text" class="form-control" placeholder="Insert something">
+            </div>
+        </div>
+        <!--<div class="col-lg-4">
+            <button id="search" type="button" class="btn btn-default">search</button>
+        </div>-->
+    </div>
+    <div style="height: 15px;"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="output-title"></div>
+            <div id="output-author"></div>
+            <table id="table" class="table table-striped">
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>
+
+<script>
+
+    $('#text').keyup(function(){
+         if ( $('#text').val().length > 0 ) {
+             search($('#text').val());
+         }
+        else {
+             $("#table").empty();
+         }
+    });
+
+    $( "#search" ).click(function() {
+        search($('#text').val())
+    });
+
+    function search(text) {
+  /*     $("#table").empty();
+        var s = '<thead>' +
+                '<tr>' +
+                    '<th>Title</th>' +
+                    '<th>Author</th>' +
+                    '<th>ISBN</th>' +
+                    '<th>Abstract</th>' +
+                    '<th>Date of pubblication</th>';
+        s += '</tr> ';
+        s += '</thead>';
+        $("#table").append(s);
+     searchTitle(text)
+        searchAuthor(text)
+        searchISBN(text)*/
+
+
+        searchAll(text, text);
+    }
+
+    function searchAll(title, author) {
+        console.log(title);
+        console.log(author);
+        var url = 'rest/library/get/books';
+        var data = {};
+        data.title = title;
+        data.author = author;
+        data.collection = 'books';
+        data.schema = 'library';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            success : function(response) {
+                $("#table").empty();
+                var s = '<thead>' +
+                        '<tr>' +
+                        '<th>Title</th>' +
+                        '<th>Author</th>' +
+                        '<th>ISBN</th>' +
+                        '<th>Abstract</th>' +
+                        '<th>Date of pubblication</th>';
+                s += '</tr> ';
+                s += '</thead>';
+                for (var i = 0 ; i < response.length ; i++) {
+                    s += '<tr>';
+                    s += '<td>' + response[i].title + '</td>';
+                    s += '<td>' + response[i].author + '</td>';
+                    s += '<td>' + response[i].isbn + '</td>';
+                    s += '<td>' + response[i].abstract + '</td>';
+                    s += '<td>' + response[i].date_publishing + '</td>';
+                    s += '</tr>'
+                }
+                $("#table").append(s);
+            },
+            error : function(err, b, c) {
+            }
+        });
+    }
+
+    function searchTitle(text) {
+        var url = 'http://168.202.23.224:8080/faostat-browse-dbms/rest/parametric/nosql/get/books/title';
+        var data = {};
+        data.title = text;
+        data.schema = 'books';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            success : function(response) {
+                var s = '';
+                for (var i = 0 ; i < response.length ; i++) {
+                    s += '<tr>';
+                    s += '<td>' + response[i].title + '</td>';
+                    s += '<td>' + response[i].author + '</td>';
+                    s += '<td>' + response[i].isbn + '</td>';
+                    s += '<td>' + response[i].abstract + '</td>';
+                    s += '<td>' + response[i].date_publishing + '</td>';
+                    s += '</tr>'
+                }
+                $("#table").append(s);
+            },
+            error : function(err, b, c) {
+            }
+        });
+    }
+
+    function searchAuthor(text) {
+        var url = 'http://168.202.23.224:8080/faostat-browse-dbms/rest/parametric/nosql/get/books/author';
+        var data = {};
+        data.author = text;
+        data.schema = 'books';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            success : function(response) {
+                var s = '';
+                for (var i = 0 ; i < response.length ; i++) {
+                    s += '<tr>';
+                    s += '<td>' + response[i].title + '</td>';
+                    s += '<td>' + response[i].author + '</td>';
+                    s += '<td>' + response[i].isbn + '</td>';
+                    s += '</tr>'
+                }
+                $("#table").append(s);
+            },
+            error : function(err, b, c) {
+            }
+        });
+    }
+
+    function searchISBN(text) {
+        var url = 'http://168.202.23.224:8080/faostat-browse-dbms/rest/parametric/nosql/get/books/isbn';
+        var data = {};
+        data.isbn = isbn;
+        data.schema = 'books';
+        $.ajax({
+            type : 'POST',
+            url : url,
+            data : data,
+            success : function(response) {
+                var s = '';
+                for (var i = 0 ; i < response.length ; i++) {
+                    s += '<tr>';
+                    s += '<td>' + response[i].title + '</td>';
+                    s += '<td>' + response[i].author + '</td>';
+                    s += '<td>' + response[i].isbn + '</td>';
+                    s += '</tr>'
+                }
+                $("#table").append(s);
+            },
+            error : function(err, b, c) {
+            }
+        });
+    }
+
+    function cleanIDS(json) {
+        var title = $('#text').val('');
+    }
+
+    cleanIDS();
+
+</script>
